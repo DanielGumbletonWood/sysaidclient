@@ -5,9 +5,13 @@
 SysAidClient is a Python library for interacting with the SysAid API (https://documentation.sysaid.com/docs/rest-api-guide). It provides an easy way to make requests to the API and handle authentication. 
 
 ## Installation 
-To install SysAidClient, you can use `pip`: 
-```bash pip install git+https://github.com/DanielGumbletonWood/sysaidclient.git
+To install SysAidClient, you can use `pip` or `pipenv`: 
+
+```bash 
+pip install git+https://github.com/DanielGumbletonWood/sysaidclient.git#egg=sysaidclient
 ``` 
+
+
 Alternatively, you can download the source code from GitHub and install it manually. 
 
 ## Usage 

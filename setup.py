@@ -8,7 +8,7 @@ setup(
     description='Wrapper for SysAid API',
     keywords=[],
     url='https://github.com/DanielGumbletonWood/python_sysaid',
-    packages=find_packages(),
+    package_dir={"": "src"},  # Optional
     scripts=[],
     install_requires=['requests'],
     include_package_data=True,

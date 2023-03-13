@@ -9,6 +9,7 @@ setup(
     keywords=[],
     url='https://github.com/DanielGumbletonWood/python_sysaid',
     package_dir={"": "src"},  # Optional
+    py_modules=["sysaidclient"],
     scripts=[],
     install_requires=['requests'],
     include_package_data=True,

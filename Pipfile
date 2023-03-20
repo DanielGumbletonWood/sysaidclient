@@ -11,6 +11,9 @@ loguru = "*"
 jedi = "*"
 mypy = "*"
 autopep8 = "*"
+pylint = "*"
+loguru = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"

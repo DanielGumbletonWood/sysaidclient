@@ -145,7 +145,7 @@ class SysAidClient:
         return response
 
 
-# client = SysAidClient(account_id="capitads", username="Dan G", password="f(6Fd(S!o")
+# client = SysAidClient(account_id="", username="", password="")
 
 # client.login()
 

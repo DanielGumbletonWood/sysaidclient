@@ -65,8 +65,7 @@ class SysAidClient:
         cookies: RequestsCookieJar = response.cookies
 
         if "JSESSIONID" not in cookies:
-            raise Exception(
-                "No JSESSIONID cookie found. User already logged in.")
+            return
 
         self.login_time: float = time.time()
         self.jsessionid: Optional[str] = cookies.get("JSESSIONID")

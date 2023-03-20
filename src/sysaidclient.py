@@ -1,11 +1,27 @@
 import time
 import json
-from typing import Dict, Optional
+from typing import Dict, Optional, List
+from dataclasses import dataclass, asdict, field
 
 import requests
 from requests import Response
 from requests.cookies import RequestsCookieJar
 
+@dataclass
+class ServiceRequestField():
+    """
+    This relates to an individual, populatable field inside of the SysAid service request.
+    """
+    key: str
+    value: str
+    valueCaption: str
+    keyCaption: str
+    valueClass: str = field(default="")
+    mandatory: bool = field(default=False)
+    editable: True = field(default=True)
+    type: str = field(default="text")
+    defaultValue: Optional[str] = field(default=None)
+    customColumnType: Optional[str] = field(default=None)
 
 class SysAidClient:
 
@@ -35,7 +51,6 @@ class SysAidClient:
 
         headers: dict = {
             "Accept": "*/*",
-            "User-Agent": "Thunder Client (https://www.thunderclient.com)",
             "Content-Type": "application/json"
         }
 
@@ -97,6 +112,78 @@ class SysAidClient:
 
         # Make the request.
         response: Response = requests.request(
-            method=method, url=url, data=payload, headers=headers)
+            method=method, url=url, data=json.dumps(payload), headers=headers)
 
         return response
+    
+    def create_service_request(self, fields: List[ServiceRequestField], status: str, assignee: str):
+        """
+        Create a service request.
+
+        Args:
+            fields (List[ServiceRequestField]): The fields to use.
+            status (str): The status to use.
+            assignee (str): The assignee to use.
+
+        Returns:
+            Response: The response from the API. 
+        
+        """
+
+        headers: dict = {
+            "Content-Type": "application/json"
+        }
+        
+        payload: dict = {
+            "status": status,
+            "assignedTo": assignee,
+            "info": [asdict(field) for field in fields]
+        }
+        
+        response: requests.Response = self.request_united("POST", "/sr", headers=headers, payload=payload)
+        
+        return response
+
+
+# client = SysAidClient(account_id="capitads", username="Dan G", password="f(6Fd(S!o")
+
+# client.login()
+
+# fields = [
+#     ServiceRequestField(
+#         key="title",
+#         value="This is a test summary",
+#         valueCaption="",
+#         keyCaption="Summary"
+#     ),
+#     ServiceRequestField(
+#         key="responsibility",
+#         value="4",
+#         keyCaption="Process Manager",
+#         valueCaption=""
+#     ),
+#     ServiceRequestField(
+#         key="urgency",
+#         value="2",
+#         valueCaption="Please select urgency",
+#         keyCaption="Urgency"
+#     ),
+#     ServiceRequestField(
+#         key="description",
+#         value="This is a test description",
+#         valueCaption="",
+#         keyCaption="Description"
+#     ),
+#     ServiceRequestField(
+#         key="assigned_group",
+#         value="10",
+#         valueCaption="",
+#         keyCaption="Admin group"
+#     ),
+# ]
+
+# client.create_service_request(
+#     fields=fields,
+#     status="2",
+#     assignee="1"
+# )

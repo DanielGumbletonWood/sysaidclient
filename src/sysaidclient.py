@@ -7,11 +7,13 @@ import requests
 from requests import Response
 from requests.cookies import RequestsCookieJar
 
+
 @dataclass
-class ServiceRequestField():
+class ServiceRequestField:
     """
     This relates to an individual, populatable field inside of the SysAid service request.
     """
+
     key: str
     value: str
     valueCaption: str
@@ -23,8 +25,8 @@ class ServiceRequestField():
     defaultValue: Optional[str] = field(default=None)
     customColumnType: Optional[str] = field(default=None)
 
-class SysAidClient:
 
+class SysAidClient:
     def __init__(self, account_id: str, username: str, password: str) -> Response:
         """
         Log the user in upon initialization.
@@ -49,19 +51,20 @@ class SysAidClient:
         Log the user in.
         """
 
-        headers: dict = {
-            "Accept": "*/*",
-            "Content-Type": "application/json"
-        }
+        headers: dict = {"Accept": "*/*", "Content-Type": "application/json"}
 
-        payload: str = json.dumps({"user_name": self.username,
-                                   "account_id": self.account_id,
-                                   "password": self.password
-                                   })
+        payload: str = json.dumps(
+            {
+                "user_name": self.username,
+                "account_id": self.account_id,
+                "password": self.password,
+            }
+        )
 
         response: Response = requests.request(
-            method="POST", url=self.login_url, data=payload,  headers=headers)
-        print(response)
+            method="POST", url=self.login_url, data=payload, headers=headers
+        )
+
         cookies: RequestsCookieJar = response.cookies
 
         if "JSESSIONID" not in cookies:
@@ -69,6 +72,8 @@ class SysAidClient:
 
         self.login_time: float = time.time()
         self.jsessionid: Optional[str] = cookies.get("JSESSIONID")
+
+        return response
 
     def is_alive(self) -> bool:
         """
@@ -84,7 +89,13 @@ class SysAidClient:
         # 45 minutes in seconds.
         return time_passed < self.login_time_limit
 
-    def request_united(self, method: str, endpoint: str, headers: Optional[Dict] = None, payload: Optional[Dict] = None) -> Response:
+    def request_united(
+        self,
+        method: str,
+        endpoint: str,
+        headers: Optional[Dict] = None,
+        payload: Optional[Dict] = None,
+    ) -> Response:
         """
         Make a request to the SysAid API.
 
@@ -111,11 +122,14 @@ class SysAidClient:
 
         # Make the request.
         response: Response = requests.request(
-            method=method, url=url, data=json.dumps(payload), headers=headers)
+            method=method, url=url, data=json.dumps(payload), headers=headers
+        )
 
         return response
-    
-    def create_service_request(self, fields: List[ServiceRequestField], status: str, assignee: str):
+
+    def create_service_request(
+        self, fields: List[ServiceRequestField], status: str, assignee: str
+    ):
         """
         Create a service request.
 
@@ -125,22 +139,22 @@ class SysAidClient:
             assignee (str): The assignee to use.
 
         Returns:
-            Response: The response from the API. 
-        
+            Response: The response from the API.
+
         """
 
-        headers: dict = {
-            "Content-Type": "application/json"
-        }
-        
+        headers: dict = {"Content-Type": "application/json"}
+
         payload: dict = {
             "status": status,
             "assignedTo": assignee,
-            "info": [asdict(field) for field in fields]
+            "info": [asdict(field) for field in fields],
         }
-        
-        response: requests.Response = self.request_united("POST", "/sr", headers=headers, payload=payload)
-        
+
+        response: requests.Response = self.request_united(
+            "POST", "/sr", headers=headers, payload=payload
+        )
+
         return response
 
 

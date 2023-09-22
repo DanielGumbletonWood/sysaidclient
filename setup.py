@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='sysaidclient',
-    version='0.03',
+    version='0.04',
     author='Daniel Gumbleton-Wood, Archie Fergurson',
     description='Wrapper for SysAid API',
     keywords=[],

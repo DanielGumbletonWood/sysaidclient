@@ -60,7 +60,7 @@ class SysAidClient:
                 "password": self.password,
             }
         )
-        print("Making login request)
+        print("Making login request")
         response: Response = requests.request(
             method="POST", url=self.login_url, data=payload, headers=headers
         )

@@ -64,6 +64,7 @@ class SysAidClient:
         response: Response = requests.request(
             method="POST", url=self.login_url, data=payload, headers=headers
         )
+        print(response)
 
         cookies: RequestsCookieJar = response.cookies
 

@@ -41,7 +41,7 @@ class SysAidClient:
         self.username: str = username
         self.password: str = password
         self.account_id: str = account_id
-        self.jsessionid: Optional[str] = None
+        
 
         self.access_url: str = f"https://{self.account_id}.sysaidit.com/api/v1"
         self.login_url: str = f"{self.access_url}/login"
@@ -65,14 +65,6 @@ class SysAidClient:
             method="POST", url=self.login_url, data=payload, headers=headers
         )
         print(response)
-
-        cookies: RequestsCookieJar = response.cookies
-
-        if "JSESSIONID" not in cookies:
-            return
-
-        self.login_time: float = time.time()
-        self.jsessionid: Optional[str] = cookies.get("JSESSIONID")
 
         return response
 

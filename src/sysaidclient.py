@@ -7,6 +7,8 @@ import requests
 from requests import Response
 from requests.cookies import RequestsCookieJar
 
+from .exceptions import AlreadyAuthorisedException
+
 
 @dataclass
 class ServiceRequestField:
@@ -68,7 +70,7 @@ class SysAidClient:
         cookies: RequestsCookieJar = response.cookies
 
         if "JSESSIONID" not in cookies:
-            raise Exception(
+            raise AlreadyAuthorisedException(
                 "No JSESSIONID cookie found. User already logged in.")
         
         self.login_time: float = time.time()

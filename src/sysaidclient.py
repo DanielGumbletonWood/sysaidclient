@@ -151,45 +151,4 @@ class SysAidClient:
         return response
 
 
-# client = SysAidClient(account_id="", username="", password="")
 
-# client.login()
-
-# fields = [
-#     ServiceRequestField(
-#         key="title",
-#         value="This is a test summary",
-#         valueCaption="",
-#         keyCaption="Summary"
-#     ),
-#     ServiceRequestField(
-#         key="responsibility",
-#         value="4",
-#         keyCaption="Process Manager",
-#         valueCaption=""
-#     ),
-#     ServiceRequestField(
-#         key="urgency",
-#         value="2",
-#         valueCaption="Please select urgency",
-#         keyCaption="Urgency"
-#     ),
-#     ServiceRequestField(
-#         key="description",
-#         value="This is a test description",
-#         valueCaption="",
-#         keyCaption="Description"
-#     ),
-#     ServiceRequestField(
-#         key="assigned_group",
-#         value="10",
-#         valueCaption="",
-#         keyCaption="Admin group"
-#     ),
-# ]
-
-# client.create_service_request(
-#     fields=fields,
-#     status="2",
-#     assignee="1"
-# )

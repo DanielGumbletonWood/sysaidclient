@@ -7,8 +7,6 @@ import requests
 from requests import Response
 from requests.cookies import RequestsCookieJar
 
-from .exceptions import AlreadyAuthorisedException
-
 
 @dataclass
 class ServiceRequestField:
@@ -28,6 +26,10 @@ class ServiceRequestField:
     customColumnType: Optional[str] = field(default=None)
 
 
+class AlreadyAuthorisedException(Exception):
+    ...
+
+
 class SysAidClient:
     def __init__(self, account_id: str, username: str, password: str) -> Response:
         """
@@ -43,7 +45,6 @@ class SysAidClient:
         self.username: str = username
         self.password: str = password
         self.account_id: str = account_id
-        
 
         self.access_url: str = f"https://{self.account_id}.sysaidit.com/api/v1"
         self.login_url: str = f"{self.access_url}/login"
@@ -62,7 +63,7 @@ class SysAidClient:
                 "password": self.password,
             }
         )
- 
+
         response: Response = requests.request(
             method="POST", url=self.login_url, data=payload, headers=headers
         )
@@ -71,11 +72,12 @@ class SysAidClient:
 
         if "JSESSIONID" not in cookies:
             raise AlreadyAuthorisedException(
-                "No JSESSIONID cookie found. User already logged in.")
-        
+                "No JSESSIONID cookie found. User already logged in."
+            )
+
         self.login_time: float = time.time()
         self.jsessionid: Optional[str] = cookies.get("JSESSIONID")
-    
+
         return response
 
     def is_alive(self) -> bool:
@@ -159,6 +161,3 @@ class SysAidClient:
         )
 
         return response
-
-
-

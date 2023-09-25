@@ -60,12 +60,20 @@ class SysAidClient:
                 "password": self.password,
             }
         )
-        print("Making login request")
+ 
         response: Response = requests.request(
             method="POST", url=self.login_url, data=payload, headers=headers
         )
-        print(response)
 
+        cookies: RequestsCookieJar = response.cookies
+
+        if "JSESSIONID" not in cookies:
+            raise Exception(
+                "No JSESSIONID cookie found. User already logged in.")
+        
+        self.login_time: float = time.time()
+        self.jsessionid: Optional[str] = cookies.get("JSESSIONID")
+    
         return response
 
     def is_alive(self) -> bool:
